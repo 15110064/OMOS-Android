@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00b8d4</color>
+    <color name="colorPrimaryDark">#0088a3</color>
+    <color name="colorPrimaryLight">#00b8d4</color>
+    <color name="colorAccent">#ff6d00</color>
+    <color name="colorSecondary">#ff6d00</color>
+    <color name="colorSecondaryDark">#c43c00</color>
+    <color name="colorSecondaryLight">#ff9e40</color>
+    <color name="white_trans">#e3ffffec</color>
+    <color name="orange_trans">#b6af4b16</color>
+    <color name="orange_trans_light">#a6ff6d00</color>
+    <color name="darker_layer">#97000000</color>
+    <color name="dark_layer_2">#b9494949</color>
+    <color name="colorPrimaryTrans">#8000b8d4</color>
+
+    <color name="black87">#1F1F1F</color>
+    <color name="black54">#6D6D6D</color>
+    <color name="black38">#939393</color>
+</resources>

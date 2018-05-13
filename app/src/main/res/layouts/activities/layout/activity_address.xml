@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    tools:context="com.kt3.android.AddressActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_navigation_height">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollbars="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <EditText
+                    android:id="@+id/txtFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Họ tên" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <EditText
+                    android:id="@+id/txtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Số điện thoại" />
+            </android.support.design.widget.TextInputLayout>
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:focusable="true"
+                android:popupBackground="#fff"
+                android:spinnerMode="dialog"
+                app:ms_baseColor="@color/dark_layer_2"
+                app:ms_floatingLabelColor="@color/dark_layer_2"
+                app:ms_highlightColor="@color/colorAccent"
+                app:ms_hint="Tỉnh/Thành"
+                app:ms_hintColor="@color/dark_layer_2"
+                app:ms_hintView="@layout/item_in_location"
+                app:ms_thickness="1px" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spProvince"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:spinnerMode="dialog"
+                    app:ms_baseColor="@color/dark_layer_2"
+                    app:ms_floatingLabelColor="@color/dark_layer_2"
+                    app:ms_highlightColor="@color/colorAccent"
+                    app:ms_hint="Quận/Huyện"
+                    app:ms_hintColor="@color/dark_layer_2"
+                    app:ms_hintView="@layout/item_in_location"
+                    app:ms_thickness="1px" />
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spWard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:spinnerMode="dialog"
+                    app:ms_baseColor="@color/dark_layer_2"
+                    app:ms_floatingLabelColor="@color/dark_layer_2"
+                    app:ms_highlightColor="@color/colorAccent"
+                    app:ms_hint="Phường/Xã"
+                    app:ms_hintColor="@color/dark_layer_2"
+                    app:ms_hintView="@layout/item_in_location"
+                    app:ms_thickness="1px" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <EditText
+                    android:id="@+id/txtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Địa chỉ" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_navigation_height"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btnSaveAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorAccent"
+            android:text="Thêm địa chỉ"
+            android:textColor="#fff" />
+    </LinearLayout>
+</RelativeLayout>

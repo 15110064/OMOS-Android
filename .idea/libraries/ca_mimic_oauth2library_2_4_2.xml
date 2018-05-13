@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="ca.mimic:oauth2library-2.4.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/oauth2library-2.4.2.aar/047254653c57e24fe78804d3a3f77cde/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/oauth2library-2.4.2.aar/047254653c57e24fe78804d3a3f77cde/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ca.mimic/oauth2library/2.4.2/f1b0c801b6e55af26bfdb10313a51c9784f3cd95/oauth2library-2.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

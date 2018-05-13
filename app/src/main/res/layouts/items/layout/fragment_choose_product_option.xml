@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"  >
+    <TextView
+        android:text="Vui lòng chọn:"
+        android:textSize="23sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"  >
+
+    <RadioGroup
+        android:orientation="vertical"
+        android:id="@+id/rgSugar"
+        android:layout_width="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="ĐƯỜNG"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/rdSugarOne_Hundred"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+
+            android:text="100"/>
+        <RadioButton
+            android:id="@+id/rdSugarSeventy"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="70"/>
+
+        <RadioButton
+            android:id="@+id/rdSugarFifty"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="50"/>
+        <RadioButton
+            android:id="@+id/rdSugarTwenty"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="20"/>
+        <RadioButton
+            android:id="@+id/rdSugarTen"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="10"/>
+
+
+    </RadioGroup>
+    <RadioGroup
+        android:orientation="vertical"
+        android:id="@+id/rgIce"
+        android:layout_width="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="ĐÁ"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+        <RadioButton
+            android:id="@+id/rdIceOne_Hundred"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+
+            android:text="100"/>
+        <RadioButton
+            android:id="@+id/rdIceSeventy"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="70"/>
+
+        <RadioButton
+            android:id="@+id/rdIceFifty"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="50"/>
+        <RadioButton
+            android:id="@+id/rdIceTwenty"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="20"/>
+        <RadioButton
+            android:id="@+id/rdIceTen"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="10"/>
+
+
+    </RadioGroup>
+        </LinearLayout>
+        <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="OK"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

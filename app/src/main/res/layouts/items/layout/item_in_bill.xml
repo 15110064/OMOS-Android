@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dp8"
+    >
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/history1"
+        android:layout_marginLeft="@dimen/dp16"
+        android:transitionName="zoom" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/img1"
+        android:paddingLeft="@dimen/dp16">
+
+
+        <TextView
+            android:id="@+id/txtDateTime1"
+            style="@style/AppTheme.Subheading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9:30 ngày 23/02/2018"
+            tools:fontFamily="@font/roboto" />
+
+        <ImageView
+            android:id="@+id/imgStatus1"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignEnd="@+id/txtAddress1"
+            android:layout_below="@+id/txtDateTime1"
+            android:src="@drawable/ic_check_circle_24dp" />
+        <TextView
+            android:id="@+id/txtTotal1"
+            style="@style/AppTheme.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDateTime1"
+            android:text="Tổng tiền 127,000đ" />
+        <TextView
+            android:id="@+id/txtID1"
+            style="@style/AppTheme.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTotal1"
+            android:text="Mã đơn hàng: TS300071" />
+
+        <TextView
+            android:id="@+id/txtAddress1"
+            style="@style/AppTheme.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtID1"
+            android:layout_marginRight="@dimen/dp16"
+            android:text="Địa chỉ giao nhận: 1 Võ Văn Ngân, Thủ Đức,..." />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/img1"
+        android:layout_marginTop="@dimen/dp8"
+        android:background="#ddd" />
+
+</RelativeLayout>
+
