@@ -55,7 +55,8 @@ public class CartActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onResume() {
         super.onResume();
-        loadData();
+        if (access_token != null)
+            loadData();
     }
 
     private void addControls() {

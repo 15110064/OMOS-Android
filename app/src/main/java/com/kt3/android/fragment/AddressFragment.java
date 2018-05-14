@@ -77,18 +77,15 @@ public class AddressFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_address, container, false);
 
         addControls(view);
-        if (access_token != null) {
-            loadData();
-        }
-
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+        if (access_token != null) {
+            loadData();
+        }
     }
 
     private void loadData() {

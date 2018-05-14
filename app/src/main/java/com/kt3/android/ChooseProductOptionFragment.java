@@ -1,6 +1,7 @@
 package com.kt3.android;
 
 import com.kt3.android.R;
+
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +20,7 @@ import android.widget.RadioGroup;
 import com.kt3.android.enums.ICE_LEVEL;
 import com.kt3.android.enums.SUGAR_LEVEL;
 
-public class ChooseProductOptionFragment extends DialogFragment implements Button.OnClickListener{
+public class ChooseProductOptionFragment extends DialogFragment implements Button.OnClickListener {
 
     private RadioGroup rgSugar;
     private RadioGroup rgIce;
@@ -86,11 +87,7 @@ public class ChooseProductOptionFragment extends DialogFragment implements Butto
         rgSugar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i)
-                {
-                    case R.id.rdSugarOne_Hundred:
-                        sugar_level = SUGAR_LEVEL.ONE_HUNDRED_PERCENT;
-                        break;
+                switch (i) {
                     case R.id.rdSugarSeventy:
                         sugar_level = SUGAR_LEVEL.SEVENTY_PERCENT;
                         break;
@@ -103,6 +100,8 @@ public class ChooseProductOptionFragment extends DialogFragment implements Butto
                     case R.id.rdSugarTen:
                         sugar_level = SUGAR_LEVEL.TEN_PERCENT;
                         break;
+                    default:
+                        sugar_level = SUGAR_LEVEL.ONE_HUNDRED_PERCENT;
                 }
             }
         });
@@ -110,11 +109,7 @@ public class ChooseProductOptionFragment extends DialogFragment implements Butto
         rgIce.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i)
-                {
-                    case R.id.rdIceOne_Hundred:
-                        ice_level = ICE_LEVEL.ONE_HUNDRED_PERCENT;
-                        break;
+                switch (i) {
                     case R.id.rdIceSeventy:
                         ice_level = ICE_LEVEL.SEVENTY_PERCENT;
                         break;
@@ -127,6 +122,8 @@ public class ChooseProductOptionFragment extends DialogFragment implements Butto
                     case R.id.rdIceTen:
                         ice_level = ICE_LEVEL.TEN_PERCENT;
                         break;
+                    default:
+                        ice_level = ICE_LEVEL.ONE_HUNDRED_PERCENT;
                 }
 
             }

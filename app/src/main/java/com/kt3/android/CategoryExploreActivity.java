@@ -236,6 +236,11 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
 
     @Override
     public void onFinishChooseProductOptionDialog(SUGAR_LEVEL sugar_level, ICE_LEVEL ice_level) {
+        if(sugar_level == null)
+            sugar_level = SUGAR_LEVEL.ONE_HUNDRED_PERCENT;
+        if(ice_level == null)
+            ice_level = ICE_LEVEL.ONE_HUNDRED_PERCENT;
+
         access_token = getSharedPreferences(ConstantData.OAUTH2_FILE_NAME, MODE_PRIVATE)
                 .getString("access_token", null);
         if (access_token == null) finish();
@@ -251,7 +256,7 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
             Toast.makeText(getApplicationContext(), cartItemJson.toString(), Toast.LENGTH_SHORT).show();
             Volley.newRequestQueue(getApplicationContext())
                     .add(new JsonObjectRequest(
-                            Request.Method.POST, "http://192.168.1.9:8080/cart/item", cartItemJson,
+                            Request.Method.POST, ConstantData.ITEM_URL, cartItemJson,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
