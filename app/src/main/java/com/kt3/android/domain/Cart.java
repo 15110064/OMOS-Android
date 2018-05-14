@@ -11,7 +11,7 @@ public class Cart implements Serializable{
 
     private BigDecimal totalPrice;
 
-    private List<CartItem> cartItems = new ArrayList<>();
+    private ArrayList<CartItem> cartItems = new ArrayList<>();
 
     private Account account;
 
@@ -34,11 +34,11 @@ public class Cart implements Serializable{
         this.totalPrice = totalPrice;
     }
 
-    public List<CartItem> getCartItems() {
+    public ArrayList<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
+    public void setCartItems(ArrayList<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
     

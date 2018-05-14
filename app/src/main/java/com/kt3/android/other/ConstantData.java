@@ -15,4 +15,6 @@ public class ConstantData {
     public static final String ACCOUNT_RESOURCE_URL = "https://account-service-kt3.azurewebsites.net/account/";
     public static final String ADDRESS_RESOURCE_URL = "https://addess-service-kt3.azurewebsites.net/address/";
     public static final String REGISTRATION_URL = "https://account-service-kt3.azurewebsites.net/account/registration";
+    public static final String CART_URL = "https://order-service-kt3.azurewebsites.net/cart/";
+    public static final String ITEM_URL = "https://order-service-kt3.azurewebsites.net/cart/item/";
 }

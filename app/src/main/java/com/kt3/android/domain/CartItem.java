@@ -8,12 +8,9 @@ import java.math.BigDecimal;
 
 public class CartItem implements Serializable {
 
-
     private int id;
 
-
     private ICE_LEVEL iceLevel;
-
 
     private SUGAR_LEVEL sugarLevel;
 
@@ -21,21 +18,13 @@ public class CartItem implements Serializable {
 
     private BigDecimal subTotal;
 
+    private long productId;
 
-   private Product product;
-
+    private Product product;
 
     private Cart cart;
 
-
     public CartItem() {
-    }
-
-    public CartItem(ICE_LEVEL iceLevel, SUGAR_LEVEL sugarLevel, int quantity, BigDecimal subTotal) {
-        this.iceLevel = iceLevel;
-        this.sugarLevel = sugarLevel;
-        this.quantity = quantity;
-        this.subTotal = subTotal;
     }
 
     public int getId() {
@@ -76,5 +65,30 @@ public class CartItem implements Serializable {
 
     public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 }

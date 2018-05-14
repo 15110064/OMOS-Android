@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.kt3.android.AddressActivity;
+import com.kt3.android.CartActivity;
 import com.kt3.android.R;
 import com.kt3.android.domain.Address;
 import com.kt3.android.fragment.AddressFragment;
@@ -141,7 +142,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
                 }
             }
         };
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("Xóa địa chỉ này?")
                 .setPositiveButton("Đồng ý", dialogClickListener)

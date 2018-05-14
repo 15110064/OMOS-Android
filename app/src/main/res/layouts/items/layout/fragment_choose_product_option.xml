@@ -19,6 +19,7 @@
     <RadioGroup
         android:orientation="vertical"
         android:id="@+id/rgSugar"
+        android:checkedButton="@id/rdSugarOne_Hundred"
         android:layout_width="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
@@ -68,6 +69,7 @@
     <RadioGroup
         android:orientation="vertical"
         android:id="@+id/rgIce"
+        android:checkedButton="@id/rdIceOne_Hundred"
         android:layout_width="0dp"
         android:layout_gravity="center"
         android:layout_weight="1"
