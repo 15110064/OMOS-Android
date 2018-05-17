@@ -14,6 +14,7 @@ import com.kt3.android.CartActivity;
 import com.kt3.android.R;
 import com.kt3.android.domain.Address;
 import com.kt3.android.fragment.AddressFragment;
+import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 import com.kt3.android.other.MODE;
 
@@ -46,9 +47,9 @@ import java.util.Map;
  */
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressHolder> {
+
     private Context context;
     private List<Address> addressList;
-
 
     public AddressAdapter(Context context, List<Address> addressList) {
         this.context = context;
@@ -156,8 +157,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
             return;
         }
 
-        RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest deleteAddressReq = new JsonObjectRequest(Request.Method.DELETE,
+        AuthVolleyRequest.getInstance(context).requestObject(Request.Method.DELETE,
                 String.format("%s%d", ConstantData.ADDRESS_RESOURCE_URL, addressID), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -171,17 +171,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>(super.getHeaders());
-                if (headers.containsKey("Authorization"))
-                    headers.remove("Authorization");
-                headers.put("Authorization", String.format("Bearer %s", access_token));
-                return headers;
-            }
-        };
-        queue.add(deleteAddressReq);
+                });
     }
 
     class AddressHolder extends RecyclerView.ViewHolder {

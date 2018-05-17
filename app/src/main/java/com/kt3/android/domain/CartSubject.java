@@ -35,7 +35,7 @@ public class CartSubject extends Observable {
 //        this.context = context;
     }
 
-    public static CartSubject getIntanse() {
+    public static CartSubject getInstance() {
         if (OBJECT == null)
             OBJECT = new CartSubject();
         return OBJECT;

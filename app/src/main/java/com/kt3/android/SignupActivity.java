@@ -74,62 +74,59 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                    // valid các trường
-                    String password = txtPassword.getText().toString();
-                    txtPassword.setError(null);
-                    txtReEnterPassword.setError(null);
+                // valid các trường
+                String password = txtPassword.getText().toString();
+                txtPassword.setError(null);
+                txtReEnterPassword.setError(null);
 
-                    if (password.length() < 3)
-                        txtPassword.setError("Tối thiểu 3 kí tự");
+                if (password.length() < 3)
+                    txtPassword.setError("Tối thiểu 3 kí tự");
 
-                    if (!password.equals(txtReEnterPassword.getText().toString()))
-                        txtReEnterPassword.setError("Mật khẩu không khớp");
+                if (!password.equals(txtReEnterPassword.getText().toString()))
+                    txtReEnterPassword.setError("Mật khẩu không khớp");
 
-                    if (txtFirstName.getText().toString().trim().isEmpty())
-                        txtFirstName.setError("Không để trống");
+                if (txtFirstName.getText().toString().trim().isEmpty())
+                    txtFirstName.setError("Không để trống");
 
-                    if (txtLastName.getText().toString().trim().isEmpty())
-                        txtLastName.setError("Không để trống");
+                if (txtLastName.getText().toString().trim().isEmpty())
+                    txtLastName.setError("Không để trống");
 
-                    if (txtPassword.getError() != null ||
-                            txtReEnterPassword.getError() != null ||
-                            txtFirstName.getError() != null ||
-                            txtLastName.getError() != null)
-                        return;
+                if (txtPassword.getError() != null ||
+                        txtReEnterPassword.getError() != null ||
+                        txtFirstName.getError() != null ||
+                        txtLastName.getError() != null)
+                    return;
 
-                    Profile profile = new Profile();
-                    profile.setFirstName(txtFirstName.getText().toString());
-                    profile.setLastName(txtLastName.getText().toString());
-                    profile.setEmailAddress(txtEmailAddress.getText().toString());
-                    profile.setBirthDay(((Date) txtBirthday.getTag()).getTime());
+                Profile profile = new Profile();
+                profile.setFirstName(txtFirstName.getText().toString());
+                profile.setLastName(txtLastName.getText().toString());
+                profile.setEmailAddress(txtEmailAddress.getText().toString());
+                profile.setBirthDay(((Date) txtBirthday.getTag()).getTime());
 
-                    Account newAccount = new Account();
-                    newAccount.setUserName(txtUsername.getText().toString());
-                    newAccount.setUserName(txtUsername.getText().toString());
-                    newAccount.setEnabled(false);
-                    newAccount.setProfile(profile);
-                    try {
+                Account newAccount = new Account();
+                newAccount.setUserName(txtUsername.getText().toString());
+                newAccount.setUserName(txtUsername.getText().toString());
+                newAccount.setEnabled(false);
+                newAccount.setProfile(profile);
+                try {
                     Gson gson = new Gson();
-                    JSONObject accountJson =  new JSONObject(gson.toJson(newAccount));
-                    RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
-                    JsonObjectRequest signUpReq = new JsonObjectRequest(Request.Method.POST,
-                            ConstantData.REGISTRATION_URL,
-                            accountJson, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Toast.makeText(SignupActivity.this, response.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+                    JSONObject accountJson = new JSONObject(gson.toJson(newAccount));
+                    Volley.newRequestQueue(SignupActivity.this).add(new JsonObjectRequest(Request.Method.POST, ConstantData.REGISTRATION_URL, accountJson,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(SignupActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
 
-                        }
-                    });
-                    queue.add(signUpReq);
+                                }
+                            }));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
 
             }

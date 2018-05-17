@@ -2,6 +2,7 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,8 +19,8 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="2dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:elevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,19 +38,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_alignTop="@+id/btnChangeInfo"
+                        android:layout_centerVertical="true"
                         android:text="Thông tin cá nhân" />
 
-                    <TextView
+                    <mehdi.sakout.fancybuttons.FancyButton
                         android:id="@+id/btnChangeInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
                         android:text="Thay đổi"
-                        android:textColor="#03A9F4" />
+                        fancy:fb_borderColor="#FFFFFF"
+                        fancy:fb_defaultColor="#f0f0f0"
+                        fancy:fb_radius="10dp"
+                        fancy:fb_textColor="@color/colorPrimaryDark" />
+
                 </RelativeLayout>
 
                 <!--Tên-->
@@ -60,12 +63,11 @@
                     android:weightSum="2">
 
                     <TextView
+                        style="@style/AppTheme.Body2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Tên"
-                        style="@style/AppTheme.Body2"
-                        />
+                        android:text="Tên" />
 
                     <EditText
                         android:id="@+id/txtFirstName"
@@ -88,12 +90,11 @@
                     android:weightSum="2">
 
                     <TextView
+                        style="@style/AppTheme.Body2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Họ"
-                        style="@style/AppTheme.Body2"
-                        />
+                        android:text="Họ" />
 
                     <EditText
                         android:id="@+id/txtLastName"
@@ -116,12 +117,11 @@
                     android:weightSum="2">
 
                     <TextView
+                        style="@style/AppTheme.Body2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Ngày sinh"
-                        style="@style/AppTheme.Body2"
-                        />
+                        android:text="Ngày sinh" />
 
                     <Button
                         android:id="@+id/btnBirthday"
@@ -139,30 +139,30 @@
 
                 <!--&lt;!&ndash;SDT&ndash;&gt;-->
                 <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:weightSum="2">-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:weightSum="2">-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:text="Số điện thoại"-->
-                        <!--style="@style/AppTheme.Body2"-->
-                        <!--/>-->
+                <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="Số điện thoại"-->
+                <!--style="@style/AppTheme.Body2"-->
+                <!--/>-->
 
-                    <!--<EditText-->
-                        <!--android:id="@+id/txtSDT"-->
-                        <!--style="@style/TextAppearance.AppCompat.Small"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:backgroundTint="@android:color/transparent"-->
-                        <!--android:enabled="false"-->
-                        <!--android:text="0123456789"-->
-                        <!--android:textAlignment="textEnd"-->
-                        <!--android:textColor="#9E9E9E" />-->
+                <!--<EditText-->
+                <!--android:id="@+id/txtSDT"-->
+                <!--style="@style/TextAppearance.AppCompat.Small"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:backgroundTint="@android:color/transparent"-->
+                <!--android:enabled="false"-->
+                <!--android:text="0123456789"-->
+                <!--android:textAlignment="textEnd"-->
+                <!--android:textColor="#9E9E9E" />-->
                 <!--</LinearLayout>-->
 
                 <!--Email-->
@@ -173,12 +173,11 @@
                     android:weightSum="2">
 
                     <TextView
+                        style="@style/AppTheme.Body2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Địa chỉ email"
-                        style="@style/AppTheme.Body2"
-                        />
+                        android:text="Địa chỉ email" />
 
                     <EditText
                         android:id="@+id/txtEmail"
@@ -200,8 +199,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="2dp"
-            >
+            android:elevation="2dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -212,21 +210,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/btnChangePassword"
+                    android:layout_centerVertical="true"
                     android:text="Mật khẩu"
                     android:textColor="#000"
                     android:textSize="18dp" />
 
-                <TextView
+                <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btnChangePassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
                     android:text="Thay đổi"
-                    android:textColor="#03A9F4" />
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_defaultColor="#f0f0f0"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_textColor="@color/colorPrimaryDark" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 

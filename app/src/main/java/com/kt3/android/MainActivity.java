@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import com.kt3.android.adapter.CategoryItemAdapter;
 import com.kt3.android.apidata.CategoryApiData;
 import com.kt3.android.domain.Category;
+import com.kt3.android.other.ConstantData;
 import com.kt3.android.pseudodata.*;
 import com.kt3.android.rest.GetJsonUtils;
 
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
 
             } else if (id == R.id.nav_logout) {
+                getSharedPreferences(ConstantData.OAUTH2_FILE_NAME, MODE_PRIVATE).edit().clear();
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
 

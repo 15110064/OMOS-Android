@@ -1,7 +1,5 @@
 package com.kt3.android.domain;
 
-import com.kt3.android.other.LOCATION_TYPE;
-
 import java.util.AbstractMap;
 
 /**

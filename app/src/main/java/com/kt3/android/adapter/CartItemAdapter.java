@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.kt3.android.R;
 import com.kt3.android.domain.CartItem;
 import com.kt3.android.domain.CartSubject;
+import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 import com.squareup.picasso.Picasso;
 
@@ -51,7 +52,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public CartItemAdapter(Context context, ArrayList<CartItem> cartItems) {
         this.context = context;
         this.cartItems = cartItems;
-        subject = CartSubject.getIntanse();
+        subject = CartSubject.getInstance();
         subject.addObserver(this);
     }
 
@@ -161,9 +162,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     }
 
     private void deleteCartItem(final CartItem cartItem, final String access_token) {
-        Volley.newRequestQueue(context)
-                .add(new JsonObjectRequest(
-                        Request.Method.DELETE, ConstantData.ITEM_URL + cartItem.getId(), null,
+        AuthVolleyRequest.getInstance(context)
+                .requestObject(Request.Method.DELETE, ConstantData.ITEM_URL + cartItem.getId(), null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -177,26 +177,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                             public void onErrorResponse(VolleyError error) {
 
                             }
-                        }) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> headers = new HashMap<>(super.getHeaders());
-                        if (headers.containsKey("Authorization"))
-                            headers.remove("Authorization");
-                        headers.put("Authorization", String.format("Bearer %s", access_token));
-                        return headers;
-                    }
-                });
+                        });
     }
 
     private void editCartItem(CartItem cartItem, final String access_token) {
         try {
             cartItem.setProductId(cartItem.getProduct().getId());
-            Toast.makeText(context, new Gson().toJson(cartItem) , Toast.LENGTH_SHORT).show();
             JSONObject cartItemJson = new JSONObject(new Gson().toJson(cartItem));
-//            cartItemJson.put("productId", cartItem.getProduct().)
-            Volley.newRequestQueue(context)
-                    .add(new JsonObjectRequest(
+
+            AuthVolleyRequest.getInstance(context)
+                    .requestObject(
                             Request.Method.PUT, ConstantData.ITEM_URL + cartItem.getId(),
                             cartItemJson,
                             new Response.Listener<JSONObject>() {
@@ -208,18 +198,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
                                 }
-                            }) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<>(super.getHeaders());
-                            if (headers.containsKey("Authorization"))
-                                headers.remove("Authorization");
-                            headers.put("Authorization", String.format("Bearer %s", access_token));
-                            return headers;
-                        }
-                    });
+                            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -229,7 +209,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     public void update(Observable o, Object arg) {
         notifyDataSetChanged();
         Toast.makeText(context, subject.getCartItems().size() + " : "
-        + cartItems.size(), Toast.LENGTH_SHORT).show();
+                + cartItems.size(), Toast.LENGTH_SHORT).show();
     }
 
     class CartItemHolder extends RecyclerView.ViewHolder {

@@ -29,12 +29,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/white_trans"
+        android:background="#eee"
         android:orientation="vertical"
+        android:padding="5px"
         android:id="@+id/linearLayout2">
 
         <LinearLayout
-            android:id="@+id/sbc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -45,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Thành tiền:"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp" />
+                android:textColor="@color/black54"
+                />
 
             <TextView
                 android:id="@+id/txtGrandTotal"
@@ -54,13 +54,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="viewEnd"
+                android:textColor="@color/colorSecondary"
+                android:text="0 đ"
                 android:textSize="20sp" />
         </LinearLayout>
+
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tiến hành thanh toán" />
+            android:text="Tiến hành thanh toán"
+            android:textColor="#fff"
+            android:background="@color/colorSecondary"/>
     </LinearLayout>
 </RelativeLayout>

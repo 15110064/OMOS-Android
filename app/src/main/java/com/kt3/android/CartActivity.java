@@ -31,6 +31,7 @@ import com.kt3.android.domain.AddressBookSubject;
 import com.kt3.android.domain.Cart;
 import com.kt3.android.domain.CartItem;
 import com.kt3.android.domain.CartSubject;
+import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 
 import org.json.JSONArray;
@@ -63,10 +64,10 @@ public class CartActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        subject = CartSubject.getIntanse();
+        subject = CartSubject.getInstance();
         subject.addObserver(this);
 
-        addressBookSubject = AddressBookSubject.getIntance(getApplicationContext());
+        addressBookSubject = AddressBookSubject.getInstance(getApplicationContext());
         addressBookSubject.addObserver(this);
         addControls();
     }
@@ -94,24 +95,50 @@ public class CartActivity extends AppCompatActivity implements Observer {
         adapterAddress = new ArrayAdapter(this, android.R.layout.simple_spinner_item, addressBookSubject.getAddressArrayList());
         adapterAddress.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 
+        View view = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.layout_choose_address, null);
+
+        spAddress = view.findViewById(R.id.spAddress);
+        spAddress.setAdapter(adapterAddress);
+
+        final AlertDialog dialog = new AlertDialog.Builder(CartActivity.this)
+                .setView(view).setTitle("Chọn địa chỉ")
+                .setPositiveButton("Tiếp tục", chooseAddress)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View view = LayoutInflater.from(getApplicationContext())
-                        .inflate(R.layout.layout_choose_address, null);
 
-                Spinner spAddress = view.findViewById(R.id.spAddress);
-                spAddress.setAdapter(adapterAddress);
-                final AlertDialog dialog = new AlertDialog.Builder(CartActivity.this)
-                        .setView(view).setTitle("Chọn địa chỉ")
-                        .setPositiveButton(R.string.save, null)
-                        .setNegativeButton(R.string.cancel, null)
-                        .create();
                 dialog.show();
             }
         });
     }
+
+    DialogInterface.OnClickListener chooseAddress = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Toast.makeText(CartActivity.this, ((Address) spAddress.getSelectedItem()).getFullName(),
+                    Toast.LENGTH_LONG).show();
+            Address address = (Address) spAddress.getSelectedItem();
+            AuthVolleyRequest.getInstance(getApplicationContext())
+                    .requestObject(Request.Method.POST, ConstantData.CART_URL + "?addressId=" + address.getId(), null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(CartActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                                    clearAllCartItems();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(CartActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+        }
+    };
 
     public void loadData() {
         cartItems.clear();

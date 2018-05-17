@@ -17,6 +17,7 @@ import com.kt3.android.domain.Category;
 import com.kt3.android.domain.Product;
 import com.kt3.android.enums.ICE_LEVEL;
 import com.kt3.android.enums.SUGAR_LEVEL;
+import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 import com.kt3.android.rest.GetJsonUtils;
 
@@ -256,9 +257,8 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         newCartItem.setQuantity(1);
         try {
             JSONObject cartItemJson = new JSONObject(new Gson().toJson(newCartItem));
-            Toast.makeText(getApplicationContext(), cartItemJson.toString(), Toast.LENGTH_SHORT).show();
-            Volley.newRequestQueue(getApplicationContext())
-                    .add(new JsonObjectRequest(
+            AuthVolleyRequest.getInstance(getApplicationContext())
+                    .requestObject(
                             Request.Method.POST, ConstantData.ITEM_URL, cartItemJson,
                             new Response.Listener<JSONObject>() {
                                 @Override
@@ -271,16 +271,7 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                                 }
-                            }){
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<>(super.getHeaders());
-                            if (headers.containsKey("Authorization"))
-                                headers.remove("Authorization");
-                            headers.put("Authorization", String.format("Bearer %s", access_token));
-                            return headers;
-                        }
-                    });
+                            });
         } catch (JSONException e) {
             e.printStackTrace();
         }

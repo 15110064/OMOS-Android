@@ -62,7 +62,7 @@ public class AddressFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        addressBookSubject = AddressBookSubject.getIntance(getActivity().getApplicationContext());
+        addressBookSubject = AddressBookSubject.getInstance(getActivity().getApplicationContext());
         addressBookSubject.addObserver(this);
     }
 

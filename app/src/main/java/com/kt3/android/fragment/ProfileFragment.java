@@ -15,6 +15,8 @@ import com.kt3.android.LoginActivity;
 import com.kt3.android.R;
 import com.kt3.android.domain.Account;
 import com.kt3.android.domain.Profile;
+import com.kt3.android.other.AuthVolleyRequest;
+
 import static com.kt3.android.other.ConstantData.*;
 
 import android.content.Context;
@@ -45,6 +47,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 import static com.kt3.android.other.ConstantData.OAUTH2_FILE_NAME;
 
 /**
@@ -57,8 +61,9 @@ public class ProfileFragment extends Fragment {
     private Profile profile;
 
     private EditText txtLastName, txtFirstName, txtEmail;
-    private TextView txtFullName, txtUserName, btnChangeInfo, btnChangePassword;
+    private TextView txtFullName, txtUserName;
     private Button btnBirthday;
+    private FancyButton btnChangeInfo, btnChangePassword;
 
     Gson gson;
 
@@ -112,39 +117,28 @@ public class ProfileFragment extends Fragment {
                 try {
                     // tạo request update
                     JSONObject profileJson = new JSONObject(gson.toJson(profile));
-                    final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-                    JsonObjectRequest updateProfileRequest = new JsonObjectRequest(Request.Method.PUT,
-                            String.format("%s%d", PROFILE_RESOURCE_URL, profile.getId()), profileJson,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        if (response != null && "success".equals(response.getString("message"))) {
-                                            Toast.makeText(getActivity(), "Thông tin đã được cập nhật", Toast.LENGTH_LONG).show();
-                                            addData();
+                    AuthVolleyRequest.getInstance(getContext())
+                            .requestObject(Request.Method.PUT, String.format("%s%d", PROFILE_RESOURCE_URL, profile.getId()), profileJson,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try {
+                                                if (response != null && "success".equals(response.getString("message"))) {
+                                                    Toast.makeText(getActivity(), "Thông tin đã được cập nhật", Toast.LENGTH_LONG).show();
+                                                    addData();
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                                    Log.i("VOLLEY ERROR", "onErrorResponse: " + error.getMessage());
-                                }
-                            }) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<>(super.getHeaders());
-                            if (headers.containsKey("Authorization"))
-                                headers.remove("Authorization");
-                            headers.put("Authorization", String.format("Bearer %s", access_token));
-                            return headers;
-                        }
-                    };
-                    requestQueue.add(updateProfileRequest);
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Log.i("VOLLEY ERROR", "onErrorResponse: " + error.getMessage());
+                                        }
+                                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -294,95 +288,64 @@ public class ProfileFragment extends Fragment {
                         try {
                             JSONObject accountJson = new JSONObject(gson.toJson(account));
 
-                            RequestQueue queue = Volley.newRequestQueue(getActivity());
-                            JsonObjectRequest changPasswordReq = new JsonObjectRequest(Request.Method.PUT,
-                                    String.format("%s%d", ACCOUNT_RESOURCE_URL, account.getId()),
-                                    accountJson,
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            try {
-                                                if (response != null && "success".equals(response.getString("message"))) {
-                                                    Toast.makeText(getActivity(), "Mật khẩu thay đổi thành công! Vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
-                                                    sharedPreferences.edit().clear();
-                                                    getActivity().finish();
+                            AuthVolleyRequest.getInstance(getContext())
+                                    .requestObject(Request.Method.PUT, String.format("%s%d", ACCOUNT_RESOURCE_URL, account.getId()), accountJson,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    try {
+                                                        if (response != null && "success".equals(response.getString("message"))) {
+                                                            Toast.makeText(getActivity(), "Mật khẩu thay đổi thành công! Vui lòng đăng nhập lại", Toast.LENGTH_LONG).show();
+                                                            sharedPreferences.edit().clear();
+                                                            getActivity().finish();
 
-                                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                                    getActivity().startActivity(intent);
-                                                    dialog.dismiss();
+                                                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                                            getActivity().startActivity(intent);
+                                                            dialog.dismiss();
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                 }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.i("PASS", "onErrorResponse: " + error.getMessage());
-                                }
-                            }) {
-                                @Override
-                                public Map<String, String> getHeaders() throws AuthFailureError {
-                                    Map<String, String> headers = new HashMap<>(super.getHeaders());
-                                    if (headers.containsKey("Authorization"))
-                                        headers.remove("Authorization");
-                                    headers.put("Authorization", String.format("Bearer %s", access_token));
-                                    return headers;
-                                }
-                            };
-                            queue.add(changPasswordReq);
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.i("PASS", "onErrorResponse: " + error.getMessage());
+                                                }
+                                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
 
-//                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-
-
             }
         });
     }
 
     private void addData() {
-        final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest getProfile = new JsonObjectRequest(
-                String.format("%sowner", PROFILE_RESOURCE_URL), null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                       profile = gson.fromJson(response.toString(), Profile.class);
+        AuthVolleyRequest.getInstance(getContext())
+                .requestObject(Request.Method.GET, String.format("%sowner", PROFILE_RESOURCE_URL), null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                profile = gson.fromJson(response.toString(), Profile.class);
 
-                        txtFullName.setText(String.format("%s %s", profile.getFirstName(), profile.getLastName()));
-                        txtFirstName.setText(profile.getFirstName());
-                        txtLastName.setText(profile.getLastName());
-                        txtEmail.setText(profile.getEmailAddress());
-                        btnBirthday.setText(profile.getBirthDayString());
-                        btnBirthday.setTag(profile.getBirthDay());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                                txtFullName.setText(String.format("%s %s", profile.getFirstName(), profile.getLastName()));
+                                txtFirstName.setText(profile.getFirstName());
+                                txtLastName.setText(profile.getLastName());
+                                txtEmail.setText(profile.getEmailAddress());
+                                btnBirthday.setText(profile.getBirthDayString());
+                                btnBirthday.setTag(profile.getBirthDay());
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>(super.getHeaders());
-                if (headers.containsKey("Authorization"))
-                    headers.remove("Authorization");
-                headers.put("Authorization", String.format("Bearer %s", access_token));
-                return headers;
-            }
-        };
-
-        requestQueue.add(getProfile);
-
+                            }
+                        });
     }
 
     private void addControls(View view) {

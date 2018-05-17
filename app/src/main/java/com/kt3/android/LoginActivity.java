@@ -19,6 +19,7 @@ import java.util.HashMap;
 import ca.mimic.oauth2library.OAuth2Client;
 import ca.mimic.oauth2library.OAuthError;
 import ca.mimic.oauth2library.OAuthResponse;
+import mehdi.sakout.fancybuttons.FancyButton;
 
 import static com.kt3.android.other.ConstantData.CLIENT_ID;
 import static com.kt3.android.other.ConstantData.CLIENT_SECRET;
@@ -28,7 +29,7 @@ import static com.kt3.android.other.ConstantData.REQUEST_TOKEN_URL;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView link_signup;
-    private Button btn_login;
+    private FancyButton btn_login;
     private EditText txtUsername, txtPassword;
 
     @Override
