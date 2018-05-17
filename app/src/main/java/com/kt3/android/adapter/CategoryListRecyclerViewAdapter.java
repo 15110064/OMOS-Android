@@ -4,6 +4,8 @@ import com.kt3.android.CategoryExploreActivity;
 import com.kt3.android.R;
 import com.kt3.android.domain.Category;
 import com.kt3.android.domain.CategoryItem;
+import com.kt3.android.interfaces.ObserAdapterClick;
+import com.kt3.android.interfaces.ViewHolderSubject;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -16,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by khoa1 on 2/20/2018.
+ * Lớp này là Adapter cho List các Category ở Activity CategoryExplorer
  */
 
 public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<CategoryListRecyclerViewAdapter.ViewHolder> {
@@ -39,6 +43,7 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_category_explore, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.add((ObserAdapterClick) context);
         return viewHolder;
     }
 
@@ -74,12 +79,14 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ViewHolderSubject {
         TextView tvCategory;
         ImageView img_category;
+        List<ObserAdapterClick> obserAdapterClicks;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            obserAdapterClicks = new ArrayList<>();
             tvCategory = (TextView) itemView.findViewById(R.id.tvCategory);
             img_category = (ImageView) itemView.findViewById(R.id.img_category);
             itemView.setOnClickListener(this);
@@ -88,20 +95,28 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
 
         @Override
         public void onClick(View view) {
-            //iToast.makeText(view.getContext(), "Clicked in the category", Toast.LENGTH_SHORT).show();
-            ((CategoryExploreActivity) context).setCategoryName(tvCategory.getText().toString());
-            if(getAdapterPosition() == 0){
-                ((CategoryExploreActivity) context).getAllProductsDataFromApi();
-            }
-            else {
-                ((CategoryExploreActivity) context).
-                        getProductsDataByCategoryFromApi(categoryItemArrayList.get(getAdapterPosition()).getId());
-            }
+            notifyChange();
+
         }
 
 
+        @Override
+        public void add(ObserAdapterClick obserAdapterClick) {
+            obserAdapterClicks.add(obserAdapterClick);
+        }
 
+        @Override
+        public void remove(ObserAdapterClick obserAdapterClick) {
+            obserAdapterClicks.remove(obserAdapterClick);
+        }
 
+        @Override
+        public void notifyChange() {
+            for (ObserAdapterClick obserAdapterClick: obserAdapterClicks
+                    ) {
+                obserAdapterClick.update(categoryItemArrayList.get(getAdapterPosition()).getId());
+            }
+        }
     }
 
 

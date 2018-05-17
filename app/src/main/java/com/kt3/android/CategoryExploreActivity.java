@@ -1,14 +1,25 @@
 package com.kt3.android;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.kt3.android.adapter.CategoryListRecyclerViewAdapter;
 import com.kt3.android.adapter.ItemInlistRecyclerViewAdapter;
 import com.kt3.android.apidata.CategoryApiData;
 import com.kt3.android.apidata.ProductApiData;
+import com.kt3.android.domain.CartItem;
 import com.kt3.android.domain.Category;
 import com.kt3.android.domain.Product;
 import com.kt3.android.enums.ICE_LEVEL;
 import com.kt3.android.enums.SUGAR_LEVEL;
+import com.kt3.android.interfaces.ObserAdapterClick;
+import com.kt3.android.interfaces.ViewHolderSubject;
+import com.kt3.android.other.ConstantData;
 import com.kt3.android.rest.GetJsonUtils;
 
 import android.app.SearchManager;
@@ -27,12 +38,19 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class CategoryExploreActivity extends AppCompatActivity implements ChooseProductOptionFragment.ChooseProductOptionDialogListener {
+public class CategoryExploreActivity extends AppCompatActivity implements ChooseProductOptionFragment.ChooseProductOptionDialogListener, ObserAdapterClick {
     private RecyclerView lvItemCategory;
     private RecyclerView lvItemInList;
     private TextView tvCategoryName;
@@ -41,6 +59,7 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
     private final String PRODUCT_SEARCH_URI = PRODUCT_URI + "/search";
     private final String PRODUCT_BYCAT_URI = PRODUCT_URI + "/category/";
     private Product currentProduct;
+    private String access_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +71,6 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         setUpProductRecyclerView();
 
         tvCategoryName = findViewById(R.id.tvCategoryName);
-
         //lvItemCategory.setAdapter(ItemCategoryData.getCategoryItem1(this, R.layout.item_category_explore));
         //lvItemCategory.setAdapter(ItemCategoryData.getCategoryItem1(this, R.layout.category_item));
 
@@ -94,16 +112,17 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
     /*
      * Hàm này chứa các lệnh thiết lập RecyclerView hiển thị category
      */
-    private void setUpCategoryRecyclerView(){
+    private void setUpCategoryRecyclerView() {
         lvItemCategory = (RecyclerView) findViewById(R.id.listChildCat);
         LinearLayoutManager horizontalLayoutManager
                 = new LinearLayoutManager(CategoryExploreActivity.this, LinearLayoutManager.HORIZONTAL, false);
         lvItemCategory.setLayoutManager(horizontalLayoutManager);
     }
+
     /*
-    * Hàm này chứa các lệnh thiết lập RecycleView hiển thị Product
-    */
-    private void setUpProductRecyclerView(){
+     * Hàm này chứa các lệnh thiết lập RecycleView hiển thị Product
+     */
+    private void setUpProductRecyclerView() {
         lvItemInList = (RecyclerView) findViewById(R.id.lvProduct);
         LinearLayoutManager verticalLayoutManager
                 = new LinearLayoutManager(CategoryExploreActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -116,11 +135,10 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
      * Được gọi sau khi AsyncTask hoàn thành nhiệm vụ.
      * Việc tách ra thread mới đảm bảo yêu cầu về kiến trúc và hiệu suất trong Android Application
      */
-    private void setCategoryRecyclerViewAdapter(ArrayList<Category> categories){
+    private void setCategoryRecyclerViewAdapter(ArrayList<Category> categories) {
         CategoryListRecyclerViewAdapter categoryItemAdapter = new CategoryListRecyclerViewAdapter(this, categories);
         lvItemCategory.setAdapter(categoryItemAdapter);
     }
-
 
 
     /*
@@ -128,11 +146,10 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
     Được gọi sau khi AsyncTask hoàn thành nhiệm vụ.
     Việc tách ra thread mới đảm bảo yêu cầu về kiến trúc và hiệu suất trong Android Application
      */
-    private void setProductRecyclerViewAdapter(ArrayList<Product> products){
+    private void setProductRecyclerViewAdapter(ArrayList<Product> products) {
         ItemInlistRecyclerViewAdapter productItemAdapter = new ItemInlistRecyclerViewAdapter(this, products);
         lvItemInList.setAdapter(productItemAdapter);
     }
-
 
 
     public void getCategoryDataFromApi() {
@@ -142,16 +159,25 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         new CategoryApiQueryTask().execute(categoryGetAllUrl);
     }
 
-    public void getAllProductsDataFromApi(){
+    public void getAllProductsDataFromApi() {
         URL productGetAllUrl = GetJsonUtils.buildUrl(PRODUCT_URI, null);
         new ProductApiQueryTask().execute(productGetAllUrl);
     }
 
-    public void searchProduct(String newText){
+    public void searchProduct(String newText) {
         URL productSearchUrl = GetJsonUtils.buildUrl(PRODUCT_SEARCH_URI, newText);
         new ProductApiQueryTask().execute(productSearchUrl);
     }
 
+    @Override
+    public void update(long categoryId) {
+        if(categoryId == 0){
+            getAllProductsDataFromApi();
+        }
+        else {
+            getProductsDataByCategoryFromApi(categoryId);
+        }
+    }
 
 
     public class CategoryApiQueryTask extends AsyncTask<URL, Void, String> {
@@ -202,16 +228,16 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         }
     }
 
-    public void getProductsDataByCategoryFromApi(Long catId){
+    public void getProductsDataByCategoryFromApi(Long catId) {
         URL productApiUrl = GetJsonUtils.buildUrl(PRODUCT_BYCAT_URI + String.valueOf(catId), null);
         Log.i("INFO", "getProductsDataByCategoryFromApi: " + productApiUrl.toString());
         new ProductApiQueryTask().execute(productApiUrl);
     }
 
-    public void setCategoryName(String name)
-    {
+    public void setCategoryName(String name) {
         tvCategoryName.setText(name);
     }
+
     public void showChooseOptionDialog(Product product) {
         currentProduct = product;
         FragmentManager fm = getSupportFragmentManager();
@@ -221,6 +247,51 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
 
     @Override
     public void onFinishChooseProductOptionDialog(SUGAR_LEVEL sugar_level, ICE_LEVEL ice_level) {
-        Toast.makeText(this, "Product: " + currentProduct.getName() + " Sugar: "+ sugar_level.toString(), Toast.LENGTH_LONG).show();
+        if(sugar_level == null)
+            sugar_level = SUGAR_LEVEL.ONE_HUNDRED_PERCENT;
+        if(ice_level == null)
+            ice_level = ICE_LEVEL.ONE_HUNDRED_PERCENT;
+
+        access_token = getSharedPreferences(ConstantData.OAUTH2_FILE_NAME, MODE_PRIVATE)
+                .getString("access_token", null);
+        if (access_token == null) finish();
+
+        CartItem newCartItem = new CartItem();
+        newCartItem.setProductId(currentProduct.getId());
+        newCartItem.setIceLevel(ice_level);
+        newCartItem.setSugarLevel(sugar_level);
+        newCartItem.setSubTotal(new BigDecimal(2.3));
+        newCartItem.setQuantity(1);
+        try {
+            JSONObject cartItemJson = new JSONObject(new Gson().toJson(newCartItem));
+            Toast.makeText(getApplicationContext(), cartItemJson.toString(), Toast.LENGTH_SHORT).show();
+            Volley.newRequestQueue(getApplicationContext())
+                    .add(new JsonObjectRequest(
+                            Request.Method.POST, ConstantData.ITEM_URL, cartItemJson,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            }){
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>(super.getHeaders());
+                            if (headers.containsKey("Authorization"))
+                                headers.remove("Authorization");
+                            headers.put("Authorization", String.format("Bearer %s", access_token));
+                            return headers;
+                        }
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        Toast.makeText(this, "Product: " + currentProduct.getName() + " Sugar: "+ sugar_level.toString(), Toast.LENGTH_LONG).show();
     }
 }
