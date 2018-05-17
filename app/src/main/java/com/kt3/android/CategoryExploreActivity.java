@@ -170,13 +170,15 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
     }
 
     @Override
-    public void update(long categoryId) {
-        if(categoryId == 0){
+    public void update(Category category) {
+        if(category.getId() == 0){
             getAllProductsDataFromApi();
+
         }
         else {
-            getProductsDataByCategoryFromApi(categoryId);
+            getProductsDataByCategoryFromApi(category.getId());
         }
+        setCategoryName(category.getName());
     }
 
 
@@ -234,7 +236,7 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         new ProductApiQueryTask().execute(productApiUrl);
     }
 
-    public void setCategoryName(String name) {
+    private void setCategoryName(String name) {
         tvCategoryName.setText(name);
     }
 

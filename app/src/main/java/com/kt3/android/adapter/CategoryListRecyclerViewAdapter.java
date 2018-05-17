@@ -114,7 +114,7 @@ public class CategoryListRecyclerViewAdapter extends RecyclerView.Adapter<Catego
         public void notifyChange() {
             for (ObserAdapterClick obserAdapterClick: obserAdapterClicks
                     ) {
-                obserAdapterClick.update(categoryItemArrayList.get(getAdapterPosition()).getId());
+                obserAdapterClick.update(categoryItemArrayList.get(getAdapterPosition()));
             }
         }
     }
