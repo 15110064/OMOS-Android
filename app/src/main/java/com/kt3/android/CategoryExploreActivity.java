@@ -245,7 +245,10 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
                 .getString("access_token", null);
         if (access_token == null) finish();
 
+        Toast.makeText(getApplicationContext(), currentProduct.getId() + " --- ", Toast.LENGTH_LONG).show();
+
         CartItem newCartItem = new CartItem();
+        newCartItem.setProduct(currentProduct);
         newCartItem.setProductId(currentProduct.getId());
         newCartItem.setIceLevel(ice_level);
         newCartItem.setSugarLevel(sugar_level);
@@ -266,7 +269,7 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
+                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             }){
                         @Override

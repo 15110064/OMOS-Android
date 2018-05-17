@@ -5,8 +5,15 @@ import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +26,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kt3.android.adapter.CartItemAdapter;
+import com.kt3.android.domain.Address;
+import com.kt3.android.domain.AddressBookSubject;
 import com.kt3.android.domain.Cart;
 import com.kt3.android.domain.CartItem;
 import com.kt3.android.domain.CartSubject;
@@ -32,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.zip.Inflater;
 
 public class CartActivity extends AppCompatActivity implements Observer {
 
@@ -42,6 +52,12 @@ public class CartActivity extends AppCompatActivity implements Observer {
     private String access_token;
     private CartSubject subject;
 
+    private Spinner spAddress;
+    private ArrayAdapter<Address> adapterAddress;
+
+    private Button btnSubmit;
+    private AddressBookSubject addressBookSubject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +65,19 @@ public class CartActivity extends AppCompatActivity implements Observer {
 
         subject = CartSubject.getIntanse();
         subject.addObserver(this);
+
+        addressBookSubject = AddressBookSubject.getIntance(getApplicationContext());
+        addressBookSubject.addObserver(this);
         addControls();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (access_token != null)
+        if (access_token != null) {
             loadData();
+            addressBookSubject.loadData();
+        }
     }
 
     private void addControls() {
@@ -70,6 +91,26 @@ public class CartActivity extends AppCompatActivity implements Observer {
                 .getString("access_token", null);
         if (access_token == null) finish();
 
+        adapterAddress = new ArrayAdapter(this, android.R.layout.simple_spinner_item, addressBookSubject.getAddressArrayList());
+        adapterAddress.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+
+        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final View view = LayoutInflater.from(getApplicationContext())
+                        .inflate(R.layout.layout_choose_address, null);
+
+                Spinner spAddress = view.findViewById(R.id.spAddress);
+                spAddress.setAdapter(adapterAddress);
+                final AlertDialog dialog = new AlertDialog.Builder(CartActivity.this)
+                        .setView(view).setTitle("Chọn địa chỉ")
+                        .setPositiveButton(R.string.save, null)
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+                dialog.show();
+            }
+        });
     }
 
     public void loadData() {
@@ -143,7 +184,7 @@ public class CartActivity extends AppCompatActivity implements Observer {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        loadData();
+//                        loadData();
                         Toast.makeText(CartActivity.this,
                                 response.toString(), Toast.LENGTH_SHORT).show();
                     }
@@ -168,7 +209,11 @@ public class CartActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        txtGrandTotal.setText(String.format("%s", subject.getCart().getTotalPrice()));
+        Log.i("I", "update: activity");
+        if (arg instanceof Address)
+            adapterAddress.notifyDataSetChanged();
+        else
+            txtGrandTotal.setText(String.format("%s", subject.getCart().getTotalPrice()));
     }
 
     @Override

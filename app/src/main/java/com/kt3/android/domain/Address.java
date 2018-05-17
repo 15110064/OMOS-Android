@@ -127,4 +127,9 @@ public class Address implements Serializable, Comparable<Address> {
     public int compareTo(@NonNull Address o) {
         return this.fullName.toUpperCase().compareTo(o.fullName.toUpperCase());
     }
+
+    @Override
+    public String toString() {
+        return  fullName;
+    }
 }

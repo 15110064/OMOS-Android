@@ -11,6 +11,7 @@ import com.kt3.android.AddressActivity;
 import com.kt3.android.R;
 import com.kt3.android.adapter.AddressAdapter;
 import com.kt3.android.domain.Address;
+import com.kt3.android.domain.AddressBookSubject;
 import com.kt3.android.other.ConstantData;
 import com.kt3.android.other.MODE;
 
@@ -23,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,9 +41,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class AddressFragment extends Fragment {
+public class AddressFragment extends Fragment
+        implements Observer {
 
 
     RecyclerView rclvAddress;
@@ -50,10 +55,15 @@ public class AddressFragment extends Fragment {
     Gson gson;
     String access_token;
 
+    private AddressBookSubject addressBookSubject;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        addressBookSubject = AddressBookSubject.getIntance(getActivity().getApplicationContext());
+        addressBookSubject.addObserver(this);
     }
 
     @Override
@@ -84,52 +94,52 @@ public class AddressFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (access_token != null) {
-            loadData();
+//            loadData();
+            addressBookSubject.loadData();
         }
     }
 
-    private void loadData() {
-        listAddress.clear();
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        final JsonArrayRequest getAddressesReq = new JsonArrayRequest(ConstantData.ADDRESS_RESOURCE_URL + "owner",
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject object = response.getJSONObject(i);
-                                listAddress.add(gson.fromJson(object.toString(), Address.class));
-                                Collections.sort(listAddress);
-                                addressAdapter.notifyDataSetChanged();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>(super.getHeaders());
-                if (headers.containsKey("Authorization"))
-                    headers.remove("Authorization");
-                headers.put("Authorization", String.format("Bearer %s", access_token));
-                return headers;
-            }
-        };
-
-        queue.add(getAddressesReq);
-    }
+//    private void loadData() {
+//        listAddress.clear();
+//        RequestQueue queue = Volley.newRequestQueue(getActivity());
+//        final JsonArrayRequest getAddressesReq = new JsonArrayRequest(ConstantData.ADDRESS_RESOURCE_URL + "owner",
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        try {
+//                            for (int i = 0; i < response.length(); i++) {
+//                                JSONObject object = response.getJSONObject(i);
+//                                listAddress.add(gson.fromJson(object.toString(), Address.class));
+//                                Collections.sort(listAddress);
+//                                addressAdapter.notifyDataSetChanged();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> headers = new HashMap<>(super.getHeaders());
+//                if (headers.containsKey("Authorization"))
+//                    headers.remove("Authorization");
+//                headers.put("Authorization", String.format("Bearer %s", access_token));
+//                return headers;
+//            }
+//        };
+//
+//        queue.add(getAddressesReq);
+//    }
 
     private void addControls(View view) {
         rclvAddress = view.findViewById(R.id.recycler_view_address);
-        listAddress = new ArrayList<>();
-        addressAdapter = new AddressAdapter(getContext(), listAddress);
+        addressAdapter = new AddressAdapter(getContext(), addressBookSubject.getAddressArrayList());
         rclvAddress.setAdapter(addressAdapter);
 
         gson = new Gson();
@@ -157,4 +167,9 @@ public class AddressFragment extends Fragment {
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        Log.i("I", "update: fragment");
+        addressAdapter.notifyDataSetChanged();
+    }
 }
