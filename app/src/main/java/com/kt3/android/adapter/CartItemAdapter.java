@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,7 +122,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
         builder.append(" đường");
         holder.txtProperties.setText(builder.toString());
         holder.txtProductName.setText(cartItem.getProduct().getName());
-        holder.txtProductPrice.setText(String.format("%s đ", cartItem.getSubTotal()));
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        holder.txtProductPrice.setText(currencyFormat.format(cartItem.getSubTotal().doubleValue()));
         holder.btnQuantity.setNumber(String.format("%d", cartItem.getQuantity()));
         holder.btnQuantity.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override

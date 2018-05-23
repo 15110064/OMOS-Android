@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -59,7 +60,8 @@ public class ItemInlistRecyclerViewAdapter extends RecyclerView.Adapter<ItemInli
                 .resize(300, 300)
                 .centerCrop()
                 .into(holder.list_img_food);
-        holder.item_food_cost.setText(categoryItem.getPrice().toString());
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        holder.item_food_cost.setText(currencyFormat.format(categoryItem.getPrice().doubleValue()));
         Log.i("Item", "Added Item");
         //chac co attribute nao null bi lay ra ko, de t coi lai , ngu di
         //:vcoi lai domain urrl dda

@@ -22,8 +22,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="72dp"
-            android:src="@drawable/logo"
-            android:layout_margin="@dimen/dp8"/>
+            android:layout_margin="@dimen/dp8"
+            android:src="@drawable/logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,32 +67,40 @@
                     android:text="123" />
             </android.support.design.widget.TextInputLayout>
 
-            <RelativeLayout
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dp8">
+                android:layout_centerHorizontal="true"
+                android:padding="12dp"
+                fancy:fb_defaultColor="@color/colorPrimaryDark"
+                fancy:fb_radius="5dp"
+                fancy:fb_text="Đăng nhập"
+                fancy:fb_textColor="#fff" />
 
-                <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_login"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:padding="12dp"
-                    fancy:fb_defaultColor="@color/colorPrimaryDark"
-                    fancy:fb_radius="5dp"
-                    fancy:fb_text="Đăng nhập"
-                    fancy:fb_textColor="#fff" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/link_signup"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Bạn chưa có tài khoản? Tạo ngay"
-                android:textColor="@color/black87"
-                android:textSize="16dp" />
+                android:padding="@dimen/dp8"
+                android:layout_gravity="center_horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="Bạn chưa có tài khoản? "
+                    android:textColor="@color/black87" />
+
+                <TextView
+                    android:id="@+id/link_signup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tạo ngay"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

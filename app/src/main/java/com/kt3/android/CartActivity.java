@@ -33,6 +33,7 @@ import com.kt3.android.domain.AddressBookSubject;
 import com.kt3.android.domain.Cart;
 import com.kt3.android.domain.CartItem;
 import com.kt3.android.domain.CartSubject;
+import com.kt3.android.domain.OrderTable;
 import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 
@@ -40,6 +41,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +71,7 @@ public class CartActivity extends AppCompatActivity implements Observer {
     private TextView txtDescription;
     private Gson gson = new Gson();
 
+    private OrderTable order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +133,8 @@ public class CartActivity extends AppCompatActivity implements Observer {
             @Override
             public void onDataEntered(Pinview pinview, boolean b) {
                 AuthVolleyRequest.getInstance(getApplicationContext())
-                        .requestObject(Request.Method.POST, ConstantData.CART_URL + "/submit?code=" + pinview.getValue(), null,
+                        .requestObject(Request.Method.POST,
+                                String.format("%s/submit?code=%s&orderId=%d", ConstantData.CART_URL, pinview.getValue(), order.getId()), null,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
@@ -169,6 +174,8 @@ public class CartActivity extends AppCompatActivity implements Observer {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
+                                        if (response.getString("status").contains("success"))
+                                          order =  gson.fromJson(response.getJSONObject("data").toString(), OrderTable.class);
                                         Toast.makeText(CartActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -298,7 +305,9 @@ public class CartActivity extends AppCompatActivity implements Observer {
                 openOptionsMenu();
                 btnSubmit.setEnabled(true);
             }
-            txtGrandTotal.setText(String.format("%s", subject.getCart().getTotalPrice()));
+
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+            txtGrandTotal.setText(currencyFormat.format(subject.getCart().getTotalPrice().doubleValue()));
         }
     }
 

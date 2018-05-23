@@ -1,10 +1,12 @@
 package com.kt3.android;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.text.method.SingleLineTransformationMethod;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -32,9 +34,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class SignupActivity extends AppCompatActivity {
 
-    private AppCompatButton btnSignup;
+    private FancyButton btnSignup, btnlogin;
 
     private EditText txtUsername, txtPassword, txtReEnterPassword,
             txtFirstName, txtLastName, txtEmailAddress, txtBirthday;
@@ -51,6 +55,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void addEvents() {
         final Calendar calendar = Calendar.getInstance();
+        txtBirthday.setTag(calendar.getTime());
         txtBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +63,6 @@ public class SignupActivity extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                Calendar calendar = Calendar.getInstance();
                                 Calendar cal = Calendar.getInstance();
                                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                                 txtBirthday.setText(format.format(cal.getTime()));
@@ -115,7 +119,16 @@ public class SignupActivity extends AppCompatActivity {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Toast.makeText(SignupActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+                                    try {
+                                        String status = response.getString("status");
+                                        String message = response.getString("message");
+                                        if(status.contains("success")){
+                                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                                        }
+                                        Toast.makeText(SignupActivity.this, message, Toast.LENGTH_LONG).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             },
                             new Response.ErrorListener() {
@@ -131,6 +144,13 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
+
+        btnlogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+            }
+        });
     }
 
     private void addControls() {
@@ -144,6 +164,7 @@ public class SignupActivity extends AppCompatActivity {
         txtEmailAddress = findViewById(R.id.txtEmailAddress);
 
         btnSignup = findViewById(R.id.btnSignup);
+        btnlogin = findViewById(R.id.btnlogin);
 
     }
 }

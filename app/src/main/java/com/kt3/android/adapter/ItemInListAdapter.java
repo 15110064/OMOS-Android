@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -54,7 +55,8 @@ public class ItemInListAdapter extends ArrayAdapter {
 
         viewHolder.txt_list_food_name.setText(itemInList.getName());
         viewHolder.list_img_food.setImageResource(itemInList.getImage());
-        viewHolder.item_food_cost.setText(itemInList.getPrice().toString());
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        viewHolder.item_food_cost.setText(currencyFormat.format(itemInList.getPrice().doubleValue()));
         return convertView;
     }
 

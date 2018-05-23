@@ -20,6 +20,8 @@ import android.widget.RadioGroup;
 import com.kt3.android.enums.ICE_LEVEL;
 import com.kt3.android.enums.SUGAR_LEVEL;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class ChooseProductOptionFragment extends DialogFragment implements Button.OnClickListener {
 
     private RadioGroup rgSugar;
@@ -36,7 +38,7 @@ public class ChooseProductOptionFragment extends DialogFragment implements Butto
     private RadioButton rdIceTwenty;
     private RadioButton rdIceTen;
 
-    private Button btnOk;
+    private FancyButton btnOk;
     private SUGAR_LEVEL sugar_level;
     private ICE_LEVEL ice_level;
 

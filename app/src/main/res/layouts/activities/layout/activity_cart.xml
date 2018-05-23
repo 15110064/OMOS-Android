@@ -45,8 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Thành tiền:"
-                android:textColor="@color/black54"
-                />
+                android:textColor="@color/black54"/>
 
             <TextView
                 android:id="@+id/txtGrandTotal"
@@ -54,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="viewEnd"
-                android:textColor="@color/colorSecondary"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="0 đ"
                 android:textSize="20sp" />
         </LinearLayout>

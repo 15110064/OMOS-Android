@@ -7,7 +7,7 @@ package com.kt3.android.other;
 public class ConstantData {
     public static final String OAUTH2_FILE_NAME = "kt3_oauth2";
     //    public static final String REQUEST_TOKEN_URL = "https://oauth2-service.azurewebsites.net/oauth/token";
-    private static final String LOCAL_HOST = "http://192.168.1.9";
+    private static final String LOCAL_HOST = "http://192.168.1.6";
     public static final String REQUEST_TOKEN_URL = LOCAL_HOST + ":8888/oauth/token";
     public static final String CLIENT_ID = "android";
     public static final String CLIENT_SECRET = "android";

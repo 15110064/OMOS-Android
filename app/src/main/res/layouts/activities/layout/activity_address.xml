@@ -43,7 +43,8 @@
                     android:id="@+id/txtPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Số điện thoại" />
+                    android:hint="Số điện thoại"
+                    android:inputType="phone"/>
             </android.support.design.widget.TextInputLayout>
 
             <fr.ganfra.materialspinner.MaterialSpinner

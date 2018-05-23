@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     Account accountRes = gson.fromJson(jsonProperties.get("account").toString(), Account.class);
 
                     // Lưu các thông tin
-                    SharedPreferences.Editor editor =  getSharedPreferences(OAUTH2_FILE_NAME, MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = getSharedPreferences(OAUTH2_FILE_NAME, MODE_PRIVATE).edit();
                     editor.clear();
                     editor.putInt("account_id", accountRes.getId());
                     editor.putBoolean("account_enable", accountRes.isEnabled());
@@ -91,7 +92,11 @@ public class LoginActivity extends AppCompatActivity {
                     return true;
                 } else { // đăng nhập không thành công
                     OAuthError error = response.getOAuthError();
-                    publishProgress(String.format("%s", error.getErrorDescription()));
+                    Log.i("LOGIN", "doInBackground: " + error.getErrorDescription());
+                    if (error.getErrorDescription().contains("Bad"))
+                        publishProgress("Tài khoản hoặc mật khẩu không đúng");
+                    else
+                        publishProgress("Đăng nhập không thành công");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -107,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if (aBoolean){
+            if (aBoolean) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }

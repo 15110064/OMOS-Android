@@ -56,7 +56,7 @@ public class BillFragment extends Fragment {
 
 
             final ArrayList<OrderTable> bills = new ArrayList<>();
-            final BillAdapter billAdapter = new BillAdapter(getContext(), bills);
+            final BillAdapter billAdapter = new BillAdapter(getActivity(), bills);
             recyclerView.setAdapter(billAdapter);
             final Gson gson = new Gson();
             AuthVolleyRequest.getInstance(getActivity().getApplicationContext())

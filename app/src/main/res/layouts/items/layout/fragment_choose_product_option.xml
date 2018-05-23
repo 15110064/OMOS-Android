@@ -1,130 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:id="@+id/edit_name"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical"  >
+    android:orientation="vertical"
+    android:padding="@dimen/dp16">
+
     <TextView
-        android:text="Vui lòng chọn:"
-        android:textSize="23sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Vui lòng chọn"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="23sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"  >
+        android:orientation="horizontal">
 
-    <RadioGroup
-        android:orientation="vertical"
-        android:id="@+id/rgSugar"
-        android:checkedButton="@id/rdSugarOne_Hundred"
-        android:layout_width="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="ĐƯỜNG"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
-        <RadioButton
-            android:id="@+id/rdSugarOne_Hundred"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-
-            android:text="100"/>
-        <RadioButton
-            android:id="@+id/rdSugarSeventy"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="70"/>
-
-        <RadioButton
-            android:id="@+id/rdSugarFifty"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="50"/>
-        <RadioButton
-            android:id="@+id/rdSugarTwenty"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="20"/>
-        <RadioButton
-            android:id="@+id/rdSugarTen"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="10"/>
-
-
-    </RadioGroup>
-    <RadioGroup
-        android:orientation="vertical"
-        android:id="@+id/rgIce"
-        android:checkedButton="@id/rdIceOne_Hundred"
-        android:layout_width="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="ĐÁ"
-            android:textStyle="bold"
-            android:textSize="18sp"
+        <RadioGroup
+            android:id="@+id/rgSugar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-        <RadioButton
-            android:id="@+id/rdIceOne_Hundred"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
+            android:checkedButton="@id/rdSugarOne_Hundred"
+            android:orientation="vertical">
 
-            android:text="100"/>
-        <RadioButton
-            android:id="@+id/rdIceSeventy"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="70"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="ĐƯỜNG"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/rdIceFifty"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="50"/>
-        <RadioButton
-            android:id="@+id/rdIceTwenty"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="20"/>
-        <RadioButton
-            android:id="@+id/rdIceTen"
-            android:layout_height="0dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="10"/>
+            <RadioButton
+                android:id="@+id/rdSugarOne_Hundred"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:text="100" />
+
+            <RadioButton
+                android:id="@+id/rdSugarSeventy"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="70" />
+
+            <RadioButton
+                android:id="@+id/rdSugarFifty"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="50" />
+
+            <RadioButton
+                android:id="@+id/rdSugarTwenty"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="20" />
+
+            <RadioButton
+                android:id="@+id/rdSugarTen"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="10" />
 
 
-    </RadioGroup>
-        </LinearLayout>
-        <RelativeLayout
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgIce"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:checkedButton="@id/rdIceOne_Hundred"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ĐÁ"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/rdIceOne_Hundred"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:text="100" />
+
+            <RadioButton
+                android:id="@+id/rdIceSeventy"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="70" />
+
+            <RadioButton
+                android:id="@+id/rdIceFifty"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="50" />
+
+            <RadioButton
+                android:id="@+id/rdIceTwenty"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="20" />
+
+            <RadioButton
+                android:id="@+id/rdIceTen"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="10" />
+
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <Button
+
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/btnOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="OK"/>
+            android:text="@string/ok"
+            fancy:fb_borderColor="@color/colorPrimary"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#fff"
+            fancy:fb_radius="10dp"
+            fancy:fb_textColor="@color/colorPrimaryDark" />
     </RelativeLayout>
 
 
