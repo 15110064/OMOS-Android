@@ -2,6 +2,7 @@ package com.kt3.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.goodiebag.pinview.Pinview;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kt3.android.adapter.CartItemAdapter;
@@ -35,8 +37,10 @@ import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +62,11 @@ public class CartActivity extends AppCompatActivity implements Observer {
 
     private Button btnSubmit;
     private AddressBookSubject addressBookSubject;
+
+    private AlertDialog submitCodeDialog;
+    private Pinview pinvCode;
+    private TextView txtDescription;
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +104,7 @@ public class CartActivity extends AppCompatActivity implements Observer {
         adapterAddress = new ArrayAdapter(this, android.R.layout.simple_spinner_item, addressBookSubject.getAddressArrayList());
         adapterAddress.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 
-        View view = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.layout_choose_address, null);
+        View view = getLayoutInflater().inflate(R.layout.layout_choose_address, null);
 
         spAddress = view.findViewById(R.id.spAddress);
         spAddress.setAdapter(adapterAddress);
@@ -110,10 +118,43 @@ public class CartActivity extends AppCompatActivity implements Observer {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.show();
             }
         });
+
+        view = getLayoutInflater().inflate(R.layout.layout_submit_code, null);
+        pinvCode = view.findViewById(R.id.pivCode);
+        txtDescription = view.findViewById(R.id.txtDescription);
+        pinvCode.setPinViewEventListener(new Pinview.PinViewEventListener() {
+            @Override
+            public void onDataEntered(Pinview pinview, boolean b) {
+                AuthVolleyRequest.getInstance(getApplicationContext())
+                        .requestObject(Request.Method.POST, ConstantData.CART_URL + "/submit?code=" + pinview.getValue(), null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            Toast.makeText(CartActivity.this, response.getString("message").toString(), Toast.LENGTH_LONG).show();
+                                            String status = response.getString("status");
+                                            if (status.contains("success"))
+                                                submitCodeDialog.cancel();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(CartActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+            }
+        });
+        submitCodeDialog = new AlertDialog.Builder(CartActivity.this)
+                .setView(view).setTitle("Nhập mã xác nhận")
+                .setNegativeButton(R.string.cancel, null)
+                .create();
     }
 
     DialogInterface.OnClickListener chooseAddress = new DialogInterface.OnClickListener() {
@@ -127,8 +168,13 @@ public class CartActivity extends AppCompatActivity implements Observer {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Toast.makeText(CartActivity.this, response.toString(), Toast.LENGTH_LONG).show();
-                                    clearAllCartItems();
+                                    try {
+                                        Toast.makeText(CartActivity.this, response.getString("message"), Toast.LENGTH_LONG).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    loadData();
+                                    submitCodeDialog.show();
                                 }
                             },
                             new Response.ErrorListener() {
@@ -143,6 +189,7 @@ public class CartActivity extends AppCompatActivity implements Observer {
     public void loadData() {
         cartItems.clear();
         cartItemAdapter.notifyDataSetChanged();
+
         final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         Volley.newRequestQueue(getApplicationContext()).add(new JsonObjectRequest(
                 ConstantData.CART_URL, null,
@@ -151,10 +198,12 @@ public class CartActivity extends AppCompatActivity implements Observer {
                     public void onResponse(JSONObject response) {
                         try {
                             subject.setCart(gson.fromJson(response.toString(), Cart.class));
-                            txtGrandTotal.setText(String.format("%s đ", subject.getCart().getTotalPrice()));
+//                            txtGrandTotal.setText(String.format("%s đ", subject.getCart().getTotalPrice()));
+
                             cartItems.addAll(subject.getCartItems());
                             subject.setCartItems(cartItems);
-                            cartItemAdapter.notifyDataSetChanged();
+//                            cartItemAdapter.notifyDataSetChanged();
+                            subject.calculateTotalPrice();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -211,9 +260,11 @@ public class CartActivity extends AppCompatActivity implements Observer {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-//                        loadData();
+                        loadData();
                         Toast.makeText(CartActivity.this,
                                 response.toString(), Toast.LENGTH_SHORT).show();
+
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -239,8 +290,16 @@ public class CartActivity extends AppCompatActivity implements Observer {
         Log.i("I", "update: activity");
         if (arg instanceof Address)
             adapterAddress.notifyDataSetChanged();
-        else
+        else {
+            if (subject.getCartItems().isEmpty()) {
+                closeOptionsMenu();
+                btnSubmit.setEnabled(false);
+            } else {
+                openOptionsMenu();
+                btnSubmit.setEnabled(true);
+            }
             txtGrandTotal.setText(String.format("%s", subject.getCart().getTotalPrice()));
+        }
     }
 
     @Override

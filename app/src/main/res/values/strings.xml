@@ -6,6 +6,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="description_submit_dialog">Mã xác nhận gồm 4 số được gửi tới số điện thoại của bạn và có hiệu lực trong 120s</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

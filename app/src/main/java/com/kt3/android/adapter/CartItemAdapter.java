@@ -208,8 +208,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.CartIt
     @Override
     public void update(Observable o, Object arg) {
         notifyDataSetChanged();
-        Toast.makeText(context, subject.getCartItems().size() + " : "
-                + cartItems.size(), Toast.LENGTH_SHORT).show();
     }
 
     class CartItemHolder extends RecyclerView.ViewHolder {

@@ -130,6 +130,6 @@ public class Address implements Serializable, Comparable<Address> {
 
     @Override
     public String toString() {
-        return  fullName;
+        return address + ", phường/xã " + wardName + ", quận/huyện " + provinceName + ", TP HCM";
     }
 }

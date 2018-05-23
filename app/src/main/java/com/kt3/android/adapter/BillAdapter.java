@@ -2,9 +2,11 @@ package com.kt3.android.adapter;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+
 import com.kt3.android.BillDetailActivity;
 import com.kt3.android.R;
 import com.kt3.android.domain.Bill;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -15,8 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kt3.android.domain.OrderTable;
+import com.kt3.android.enums.ORDER_STATUS;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,9 +31,9 @@ import java.util.List;
 
 public class BillAdapter extends RecyclerView.Adapter<BillAdapter.Bill11Holder> {
     private Context context;
-    private List<Bill> billList;
+    private List<OrderTable> billList;
 
-    public BillAdapter(Context context, List<Bill> billList) {
+    public BillAdapter(Context context, List<OrderTable> billList) {
         this.context = context;
         this.billList = billList;
     }
@@ -42,36 +48,35 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.Bill11Holder> 
 
     @Override
     public void onBindViewHolder(Bill11Holder holder, int position) {
-        final Bill bill = billList.get(position);
+        final OrderTable bill = billList.get(position);
         holder.bill = bill;
-        holder.txtDateTime1.setText(bill.getDateTime());
-        holder.txtTotal1.setText("Tổng tiền: " + bill.getTotal() + "đ");
-        holder.txtAddress1.setText("Địa chỉ: " + bill.getAddress());
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        holder.txtDateTime1.setText(format.format(new Date(bill.getCreateIn())));
+        holder.txtTotal1.setText("Tổng tiền: " + bill.getTotalPrice().doubleValue() + "đ");
+        holder.txtAddress1.setText("Địa chỉ: " + bill.getAddress().toString());
 
-Drawable statusIcon = context.getResources().getDrawable(R.drawable.ic_query_builder_24dp);
-        switch (bill.getStatus()) {
-            case DA_GIAO:
-//                holder.txtStatus1.setText("Đã giao");
-//                holder.txtStatus1.setTextColor(Color.parseColor("#00C853"));
-                statusIcon = context.getResources().getDrawable(R.drawable.ic_check_circle_24dp);
+        Drawable statusIcon = context.getResources().getDrawable(R.drawable.ic_help_outline_24dp);
+        switch (bill.getOrder_status()) {
+            case CHUA_XAC_NHAN:
+                statusIcon = context.getResources().getDrawable(R.drawable.ic_help_outline_24dp);
                 break;
-            case DANG_VC:
-//                holder.txtStatus1.setText("Đang vận chuyển");
-//                holder.txtStatus1.setTextColor(Color.parseColor("#00C853"));
+            case DA_NHAN:
+                statusIcon = context.getResources().getDrawable(R.drawable.ic_query_builder_24dp);
+                break;
+            case DANG_GIAO_HANG:
                 statusIcon = context.getResources().getDrawable(R.drawable.ic_local_shipping_24dp);
-                break;
-            case DANG_XL:
-//                holder.txtStatus1.setText("Đang xử lý");
-//                holder.txtStatus1.setTextColor(Color.parseColor("#FFC107"));
                 break;
             case DA_HUY:
                 statusIcon = context.getResources().getDrawable(R.drawable.ic_cancel_24dp);
+                break;
+            case DA_GIAO:
+                statusIcon = context.getResources().getDrawable(R.drawable.ic_check_circle_24dp);
                 break;
         }
         holder.imgStatus1.setImageDrawable(statusIcon);
 
         Picasso.with(context)
-                .load(bill.getImg())
+                .load(R.drawable.placeholder_milktea)
                 .error(R.drawable.placeholder_milktea)
                 .placeholder(R.drawable.placeholder_milktea)
                 .resize(300, 300)
@@ -90,7 +95,7 @@ Drawable statusIcon = context.getResources().getDrawable(R.drawable.ic_query_bui
         public TextView txtTotal1;
         public TextView txtAddress1;
         public ImageView imgStatus1;
-        public Bill bill;
+        public OrderTable bill;
 
         public Bill11Holder(final View itemView) {
             super(itemView);
