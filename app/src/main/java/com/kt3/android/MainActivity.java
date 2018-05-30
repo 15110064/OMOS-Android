@@ -56,9 +56,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                Snackbar.make(view, "888888888888888888",
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "888888888888888888",
+//                        Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent i = new Intent(MainActivity.this, CartActivity.class);
+                // Bill bill = new Bill("10:30 - 23/02/2018", 179000.0, "1 Võ Văn Ngân, TĐ, TPHCM", R.drawable.history1, Bill.STATUS.DANG_VC);
+                //i.putExtra("bill", bill);
+                startActivity(i);
+                //TODO: fix error here. BillDetailActivity can't start
 
             }
         });

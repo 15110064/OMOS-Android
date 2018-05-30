@@ -17,6 +17,7 @@ import com.kt3.android.domain.Category;
 import com.kt3.android.domain.Product;
 import com.kt3.android.enums.ICE_LEVEL;
 import com.kt3.android.enums.SUGAR_LEVEL;
+import com.kt3.android.interfaces.ObserAdapterClick;
 import com.kt3.android.other.AuthVolleyRequest;
 import com.kt3.android.other.ConstantData;
 import com.kt3.android.rest.GetJsonUtils;
@@ -49,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CategoryExploreActivity extends AppCompatActivity implements ChooseProductOptionFragment.ChooseProductOptionDialogListener {
+public class CategoryExploreActivity extends AppCompatActivity implements ChooseProductOptionFragment.ChooseProductOptionDialogListener, ObserAdapterClick {
     private RecyclerView lvItemCategory;
     private RecyclerView lvItemInList;
     private TextView tvCategoryName;
@@ -169,6 +170,18 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         new ProductApiQueryTask().execute(productSearchUrl);
     }
 
+    @Override
+    public void update(Category category) {
+        if(category.getId() == 0){
+            getAllProductsDataFromApi();
+
+        }
+        else {
+            getProductsDataByCategoryFromApi(category.getId());
+        }
+        tvCategoryName.setText(category.getName());
+    }
+
 
     public class CategoryApiQueryTask extends AsyncTask<URL, Void, String> {
 
@@ -251,25 +264,25 @@ public class CategoryExploreActivity extends AppCompatActivity implements Choose
         CartItem newCartItem = new CartItem();
         newCartItem.setProduct(currentProduct);
         newCartItem.setProductId(currentProduct.getId());
-        newCartItem.setIceLevel(ice_level);
-        newCartItem.setSugarLevel(sugar_level);
-        newCartItem.setSubTotal(new BigDecimal(2.3));
-        newCartItem.setQuantity(1);
-        try {
-            JSONObject cartItemJson = new JSONObject(new Gson().toJson(newCartItem));
-            AuthVolleyRequest.getInstance(getApplicationContext())
-                    .requestObject(
-                            Request.Method.POST, ConstantData.ITEM_URL, cartItemJson,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                    newCartItem.setIceLevel(ice_level);
+                                    newCartItem.setSugarLevel(sugar_level);
+                                    newCartItem.setSubTotal(new BigDecimal(2.3));
+                                    newCartItem.setQuantity(1);
+                                    try {
+                                        JSONObject cartItemJson = new JSONObject(new Gson().toJson(newCartItem));
+                                        AuthVolleyRequest.getInstance(getApplicationContext())
+                                                .requestObject(
+                                                        Request.Method.POST, ConstantData.ITEM_URL, cartItemJson,
+                                                        new Response.Listener<JSONObject>() {
+                                                            @Override
+                                                            public void onResponse(JSONObject response) {
+                                                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        },
+                                                        new Response.ErrorListener() {
+                                                            @Override
+                                                            public void onErrorResponse(VolleyError error) {
+                                                                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             });
         } catch (JSONException e) {

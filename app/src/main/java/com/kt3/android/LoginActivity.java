@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("password", strings[1]);
                     editor.putString("access_token", response.getAccessToken());
                     editor.commit();
-                    publishProgress("You are logging success !!! ");
+                    publishProgress("Đăng nhập thành công !!! ");
                     return true;
                 } else { // đăng nhập không thành công
                     OAuthError error = response.getOAuthError();
